@@ -1,0 +1,26 @@
+{
+  "name": "joshu-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot with utilities to help with Japanese language",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sglkc/joshu-bot.git"
+  },
+  "author": "sglkc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sglkc/joshu-bot/issues"
+  },
+  "homepage": "https://github.com/sglkc/joshu-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "kuroshiro": "^1.1.2",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
+    "node-fetch": "^2.6.7",
+    "node-html-to-image": "^3.2.4"
+  }
+}
