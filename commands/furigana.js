@@ -1,4 +1,5 @@
 const { MessageAttachment } = require('discord.js');
+const { pi } = require('../config.json');
 const html2image = require('node-html-to-image');
 const Kuroshiro = require("kuroshiro");
 const KuromojiAnalyzer = require("kuroshiro-analyzer-kuromoji");
@@ -19,6 +20,7 @@ module.exports = {
     const furigana = await kuroshiro.init(new KuromojiAnalyzer())
       .then(() => kuroshiro.convert(text, options));
     const image = await html2image({
+      puppeteerArgs: (pi ? { executablePath: 'chromium-browser' } : undefined),
       transparent: true,
       html: `${furigana}
       <style>

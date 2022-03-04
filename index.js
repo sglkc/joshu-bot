@@ -38,10 +38,11 @@ client.on('message', async message => {
   try {
     message.channel.startTyping();
     await command.execute(message, args);
-    message.channel.stopTyping();
   } catch (error) {
     console.error(error);
   }
+
+  message.channel.stopTyping();
 });
 
 client.login(token);
