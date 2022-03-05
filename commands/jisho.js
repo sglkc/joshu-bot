@@ -9,30 +9,36 @@ module.exports = {
   usage: '<word>',
   args: true,
   async execute(message, args) {
-    const word = args[0];
+    const word = args.join(' ');
     const uri = `https://jisho.org/api/v1/search/words?keyword=${word}`;
     const response = await fetch(encodeURI(uri));
     const json = await response.json();
     const list = json.data
       .map((r, i) => {
-        const titles = r.japanese.map((j) => `${j.word || ''} (${j.reading})`);
+        const titles = r.japanese.map((j) => {
+          return (j.word || '') + (j.reading ? ` (${j.reading})` : '')
+        });
         const tags = [ ...r.is_common ? ['common'] : [], ...r.jlpt, ...r.tags];
         const senses = r.senses.map((s, i) => {
           return `${i + 1}) ${s.english_definitions.join(', ')} ` +
             `| _${s.parts_of_speech.join(', ')}_` +
             ( s.tags.length ? ` | ${s.tags.join(', ')}` : '');
         });
+        const raw = (tags.length ? `> ${tags.join(', ')}\n` : '') +
+          `${senses.join('\n')}`;
+        const text = raw.slice(0, 956) +
+          `[Read more...](https://jisho.org/word/${r.japanese[0].word})`;
 
         return {
           name: titles.join(', '),
-          value: (tags.length ? `> ${tags.join(', ')}\n` : '') +
-          `${senses.join('\n')}`
+          value: raw.length > 1024 ? text : raw
         };
       });
     let page = 1;
     const total = Math.ceil(list.length / 3) || 1;
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
+      .setURL(encodeURI(`https://jisho.org/search/${word}`))
       .setTitle(`${word} (Total: ${list.length})`)
       .setFooter(`Page ${page} of ${total}`);
 

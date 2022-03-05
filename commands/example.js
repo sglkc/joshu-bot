@@ -25,6 +25,7 @@ module.exports = {
     const total = Math.ceil(list.length / 10) || 1;
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
+      .setURL(encodeURI(`https://massif.la/ja/search?q=${word}`))
       .setTitle(`${word} (Total: ${list.length})`)
       .setDescription(list.length ? list.slice(0, 10) : 'No results.')
       .setFooter(`Page ${page} of ${total}`);
