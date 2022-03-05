@@ -22,14 +22,14 @@ module.exports = {
         return `${i + 1}) ${text}`;
       });
     let page = 1;
-    const total = Math.floor(list.length / 10) || 1;
+    const total = Math.ceil(list.length / 10) || 1;
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
       .setTitle(`${word} (Total: ${list.length})`)
       .setDescription(list.length ? list.slice(0, 10) : 'No results.')
       .setFooter(`Page ${page} of ${total}`);
 
-    if (!list.length) return message.channel.send(embed);
+    if (list.length <= 10) return message.channel.send(embed);
 
     message.channel.stopTyping();
 

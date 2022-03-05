@@ -30,18 +30,18 @@ module.exports = {
         };
       });
     let page = 1;
-    const total = Math.floor(list.length / 3) || 1;
+    const total = Math.ceil(list.length / 3) || 1;
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
       .setTitle(`${word} (Total: ${list.length})`)
       .setFooter(`Page ${page} of ${total}`);
 
-    if (!list.length) {
-      embed.setDescription('No results.');
-      return message.channel.send(embed);
-    }
+    if (!list.length) embed.setDescription('No results.');
 
     embed.addFields([ ...list.slice(0, 3) ]);
+
+    if (list.length <= 3) return message.channel.send(embed);
+
     message.channel.stopTyping();
 
     const sent = await message.channel.send(embed);

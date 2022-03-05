@@ -14,7 +14,11 @@ module.exports = {
       embed.setTitle('Commands');
 
       commands.forEach((command) => {
-        embed.addField(command.name, command.description);
+        embed.addField(
+          command.name,
+          `${command.description}\n` +
+          (command.usage ? `${prefix}${command.name} ${command.usage}` : '')
+        );
       });
 
       return message.channel.send(embed);
