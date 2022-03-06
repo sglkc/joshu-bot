@@ -1,5 +1,4 @@
 const { MessageAttachment } = require('discord.js');
-const { pi } = require('../config.json');
 const renderFurigana = require('render-furigana');
 
 module.exports = {

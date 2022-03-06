@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
+const { paginate } = require('../util/pagination');
 
 module.exports = {
   name: 'jisho',
@@ -27,54 +28,25 @@ module.exports = {
         const raw = (tags.length ? `> ${tags.join(', ')}\n` : '') +
           `${senses.join('\n')}`;
         const text = raw.slice(0, 956) +
-          `[Read more...](https://jisho.org/word/${r.japanese[0].word})`;
+          ` [Read more...](https://jisho.org/word/${r.japanese[0].word})`;
 
         return {
           name: titles.join(', '),
           value: raw.length > 1024 ? text : raw
         };
       });
-    let page = 1;
-    const total = Math.ceil(list.length / 3) || 1;
+    const offset = 3;
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
       .setURL(encodeURI(`https://jisho.org/search/${word}`))
-      .setTitle(`${word} (Total: ${list.length})`)
-      .setFooter(`Page ${page} of ${total}`);
+      .setTitle(`${word} (Total: ${list.length})`);
 
     if (!list.length) embed.setDescription('No results.');
 
-    embed.addFields([ ...list.slice(0, 3) ]);
+    embed.addFields([ ...list.slice(0, offset) ]);
 
-    if (list.length <= 3) return message.channel.send(embed);
-
-    message.channel.stopTyping();
-
-    const sent = await message.channel.send(embed);
-    const emojis = ['⬅', '➡'];
-
-    for (const emoji of emojis) await sent.react(emoji);
-
-    const reactions = sent.createReactionCollector(
-      (reaction) => emojis.includes(reaction.emoji.name), { time: 15000 }
-    );
-
-    reactions.on('collect', (reaction) => {
-      if (reaction.emoji.name === emojis[0]) {
-        page = page - 1 > 0 ? page - 1 : total;
-      } else if (reaction.emoji.name === emojis[1]) {
-        page = page + 1 <= total ? page + 1 : 1;
-      }
-
-      reactions.resetTimer({ time: 15000 });
-      embed.spliceFields(0, 3, list.slice(page * 3 - 3, page * 3))
-        .setFooter(`Page ${page} of ${total}`);
-
-      sent.edit(embed);
-    });
-
-    reactions.on('end', () => {
-      if (!sent.deleted) sent.reactions.removeAll();
+    await paginate(message, embed, list.length, offset, (embed, index) => {
+      return embed.spliceFields(0, offset, list.slice(index, index + offset));
     });
   }
 }
