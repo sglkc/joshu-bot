@@ -21,6 +21,6 @@
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "node-fetch": "^2.6.7",
-    "node-html-to-image": "^3.2.4"
+    "render-furigana": "^2.0.4"
   }
 }
