@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sglkc/joshu-bot#readme",
   "dependencies": {
     "discord.js": "^12.5.3",
+    "jp-verbs": "^1.0.1",
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "node-fetch": "^2.6.7",
