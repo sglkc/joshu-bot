@@ -9,17 +9,27 @@ module.exports = {
   args: true,
   async execute(message, args) {
     const word = args[0];
+    const links = conjugator.GrammarLinkForWordType;
     const decon = conjugator.unconjugate(word);
+    const added = [];
     const embed = new MessageEmbed()
       .setColor('#71d0fc')
       .setTitle(`_Possible_ Conjugations for ${word}`);
 
-    decon.forEach((b, i) => {
+    decon.forEach(b => {
+      if (added.includes(b.base)) return;
+
+      const forms = b.derivationSequence.wordFormProgression.join(' **>** ');
+      const derivations = b.derivationSequence.derivations.map(d => {
+        return `[${d}](${links[d]})`;
+      });
+
+      added.push(b.base);
       embed.addField(
-        `${i + 1}. ${b.base}`,
-        (!b.derivationSequence.derivations.length) ? 'Not a conjugated verb?' :
-        `${b.derivationSequence.wordFormProgression.join(' **>** ')}\n` +
-        `${b.derivationSequence.derivations.join(' **>** ')}`
+        `${added.length}. ${b.base}`,
+        (forms && derivations.length)
+        ? `${forms}\n${derivations.join(' **>** ')}`
+        : 'Not a conjugated verb?'
       );
     });
 
