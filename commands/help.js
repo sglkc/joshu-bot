@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { prefix } = require('../config.json');
+const { prefix, embedColor } = require('../config.json');
 
 module.exports = {
   name: 'help',
@@ -8,7 +8,7 @@ module.exports = {
   usage: '[command name]',
   async execute(message, args) {
     const { commands } = message.client;
-    const embed = new MessageEmbed().setColor('#71d0fc');
+    const embed = new MessageEmbed().setColor(embedColor);
 
     if (!args.length) {
       embed.setTitle('Commands');

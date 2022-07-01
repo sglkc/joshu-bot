@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const { paginate } = require('../util/pagination');
+const { embedColor } = require('../config.json');
 
 module.exports = {
   name: 'example',
@@ -23,7 +24,7 @@ module.exports = {
       });
     const offset = 10;
     const embed = new MessageEmbed()
-      .setColor('#71d0fc')
+      .setColor(embedColor)
       .setURL(encodeURI(`https://massif.la/ja/search?q=${word}`))
       .setTitle(`${word} (Total: ${list.length})`)
       .setDescription(list.length ? list.slice(0, 10) : 'No results.');

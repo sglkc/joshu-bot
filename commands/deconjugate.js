@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const conjugator = require('jp-verbs');
+const { embedColor } = require('../config.json');
 
 module.exports = {
   name: 'deconjugate',
@@ -13,7 +14,7 @@ module.exports = {
     const decon = conjugator.unconjugate(word);
     const added = [];
     const embed = new MessageEmbed()
-      .setColor('#71d0fc')
+      .setColor(embedColor)
       .setTitle(`_Possible_ Conjugations for ${word}`);
 
     decon.forEach(b => {

@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const { paginate } = require('../util/pagination');
+const { embedColor } = require('../config.json');
 
 module.exports = {
   name: 'jisho',
@@ -37,7 +38,7 @@ module.exports = {
       });
     const offset = 3;
     const embed = new MessageEmbed()
-      .setColor('#71d0fc')
+      .setColor(embedColor)
       .setURL(encodeURI(`https://jisho.org/search/${word}`))
       .setTitle(`${word} (Total: ${list.length})`);
 
